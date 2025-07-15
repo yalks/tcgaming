@@ -1,4 +1,4 @@
-module github.com/tc-gaming/tcgaming-go
+module github.com/yalks/tcgaming
 
 go 1.23
 
