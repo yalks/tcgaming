@@ -105,12 +105,41 @@ func (c *Client) LaunchGameLottery(username string, productType, gameMode int, g
 		return nil, err
 	}
 
-	var result LaunchGameResponse
-	if err := unmarshalResponseData(resp, &result); err != nil {
+	// For launch game API, the data is directly in the response, not nested under "data" or "result"
+	raw, err := c.SendRawRequest(params)
+	if err != nil {
 		return nil, err
 	}
 
-	return &result, nil
+	var fullResponse struct {
+		Status       int     `json:"status"`
+		GameURL      string  `json:"game_url"`
+		Token        string  `json:"token"`
+		ErrorDesc    *string `json:"error_desc"`
+		ErrorMessage string  `json:"error_message"`
+	}
+
+	if err := json.Unmarshal(raw.Body, &fullResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal launch game response: %w", err)
+	}
+
+	// Check for API errors
+	if fullResponse.Status != 0 {
+		errMsg := "Unknown error"
+		if fullResponse.ErrorMessage != "" {
+			errMsg = fullResponse.ErrorMessage
+		} else if fullResponse.ErrorDesc != nil {
+			errMsg = *fullResponse.ErrorDesc
+		}
+		return nil, NewProcessException(errMsg, fullResponse.Status)
+	}
+
+	result := &LaunchGameResponse{
+		GameURL: fullResponse.GameURL,
+		Token:   fullResponse.Token,
+	}
+
+	return result, nil
 }
 
 type GameInfo struct {

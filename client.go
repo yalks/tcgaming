@@ -178,7 +178,7 @@ func (c *Client) sendRequest(params Request) (*Response, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
 	}
-
+	godump.Dump(string(jsonData))
 	encrypted, err := c.encryptText(string(jsonData))
 	if err != nil {
 		return nil, fmt.Errorf("failed to encrypt request: %w", err)
@@ -208,7 +208,7 @@ func (c *Client) sendRequest(params Request) (*Response, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %w", err)
 	}
-	godump.Dump(body)
+	godump.Dump(string(body))
 
 	// Check if response is HTML (error page)
 	if len(body) > 0 && body[0] == '<' {

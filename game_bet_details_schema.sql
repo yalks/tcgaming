@@ -115,7 +115,7 @@ CREATE TABLE game_rng_bet_details (
 COMMENT='存储RNG/FISH游戏的投注详情记录';
 
 -- 投注详情API调用记录表
-CREATE TABLE bet_details_api_calls (
+CREATE TABLE game_bet_details_api_calls (
     -- 主键和基本信息
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
@@ -158,7 +158,7 @@ CREATE TABLE bet_details_api_calls (
 COMMENT='投注详情API调用和分页信息记录';
 
 -- 玩家投注汇总统计表
-CREATE TABLE player_bet_summary (
+CREATE TABLE game_player_bet_summary (
     -- 主键和基本信息
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 

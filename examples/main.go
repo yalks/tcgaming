@@ -9,7 +9,7 @@ import (
 
 	"github.com/goforj/godump"
 	uuid "github.com/google/uuid"
-	"github.com/tc-gaming/tcgaming-go"
+	"github.com/yalks/tcgaming"
 )
 
 func main() {

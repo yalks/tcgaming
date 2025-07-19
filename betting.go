@@ -16,6 +16,7 @@ type BetDetail struct {
 	Currency          string      `json:"currency"`
 	TransactionTime   string      `json:"transactionTime"`
 	GameCode          string      `json:"gameCode"`
+	GameName          string      `json:"gameName"` // Live游戏也返回gameName
 	BetOrderNo        string      `json:"betOrderNo"`
 	BetTime           string      `json:"betTime"`
 	ProductType       int         `json:"productType"`
@@ -107,13 +108,14 @@ func (c *Client) GetLiveBetDetailsByMember(username, startDate, endDate string, 
 		EndDate:   endDate,
 		Page:      page,
 	}
+	godump.Dump(params)
 
 	// For Live bet details API, the data is directly in the response, not nested under "data" or "result"
 	raw, err := c.SendRawRequest(params)
 	if err != nil {
 		return nil, err
 	}
-	godump.Dump(raw.Body)
+	godump.Dump(string(raw.Body))
 
 	var result LiveBetDetailsResponse
 	if err := json.Unmarshal(raw.Body, &result); err != nil {
@@ -143,13 +145,14 @@ func (c *Client) GetRNGBetDetailsByMember(username, startDate, endDate string, p
 		EndDate:   endDate,
 		Page:      page,
 	}
+	godump.Dump(params)
 
 	// For RNG bet details API, the data is directly in the response
 	raw, err := c.SendRawRequest(params)
 	if err != nil {
 		return nil, err
 	}
-	godump.Dump(raw.Body)
+	godump.Dump(string(raw.Body))
 
 	var result RNGBetDetailsResponse
 	if err := json.Unmarshal(raw.Body, &result); err != nil {
